@@ -1,2 +1,2 @@
 # NetworkPlayground
-A place for me to mess around to neural networks
+A place for me to mess around with neural networks
