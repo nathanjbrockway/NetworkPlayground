@@ -11,7 +11,7 @@ def cnn_model_fn(features, labels, mode):
     #CNN logic
 
     #Input Layer
-    input_layer = tf.reshape(features["x"],[-1,28,28,-1])
+    input_layer = tf.reshape(features["x"],[-1,28,28,1])
 
     #1 Convolutional Layer: 32 5x5 filters with ReLU activation
     conv1 = tf.layers.conv2d(
@@ -46,7 +46,7 @@ def cnn_model_fn(features, labels, mode):
     )
 
     #1 Dense Layer: 1,024 neurons with regularization rate of 0.4
-    pool2_flat = tf.reshape(pool2, [-1, 7*7*64])
+    pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
     dense = tf.layers.dense(
         inputs = pool2_flat,
         units = 1024,
