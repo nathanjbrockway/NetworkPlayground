@@ -64,11 +64,36 @@ def cnn_model(images, labels, mode):
     #Training & Evaluation
     predictions = {
         #generate some predictions
-        "classes": tf.argmax(inputs = logits, axis = 1),
-        
+        "classes": tf.argmax(input = logits, axis = 1),
+
         #add `softmax_tensor` to graph to help with PREDICT
         "probabilities": tf.nn.softmax(logits, name="softmax_tensor")
     }
+
+    if mode == tf.estimator.ModeKeys.PREDICT:
+        return tf.estimator.EstimatorSpec(mode = mode, predictions = predictions)
+
+    #calculate losses for TRAIN & EVAL
+    loss = tf.losses.sparse_softmax_cross_entropy(labels = labels, logits = logits)
+
+    #trainging config
+    if mode == tf.estimator.ModeKeys.TRAIN:
+        optimizer = tf.train.GradientDescentOptimizer(learning_rate = 0.001)
+        train_op = optimizer.minimize(
+            loss = loss,
+            global_step = tf.train.get_global_step()
+        )
+        return tf.estimator.EstimatorSpec(mode = mode, loss = loss, train_op = train_op)
+    
+    #evaluation setup
+    eval_metric_ops = {
+        "accuracy": tf.metrics.accuracy(
+            labels = labels,
+            predictions = predictions["classes"]
+        )
+    }
+
+    return tf.estimator.EstimatorSpec(mode = mode, loss = loss, eval_metric_ops = eval_metric_ops)
 
 if __name__ == "__main__":
     tf.app.run()
