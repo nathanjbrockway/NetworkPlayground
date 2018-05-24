@@ -66,7 +66,7 @@ def cnn_model_fn(features, labels, mode):
         #generate some predictions
         "classes": tf.argmax(input = logits, axis = 1),
 
-        #add `softmax_tensor` to graph to help with PREDICT and logged
+        #add `softmax_tensor` to graph to help with PREDICT and logging
         "probabilities": tf.nn.softmax(logits, name = "softmax_tensor")
     }
 
@@ -110,11 +110,11 @@ def main(unused):
     )
 
     #Logger
-    tensors_to_log = {"probablities": "softmax_tensor"}
+    '''tensors_to_log = {"probablities": "softmax_tensor"}
     logging_hook = tf.train.LoggingTensorHook(
         tensors = tensors_to_log,
         every_n_iter = 50
-    )
+    )'''
 
     #Train network
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -127,7 +127,7 @@ def main(unused):
     mnist_classifier.train(
         input_fn = train_input_fn,
         steps = 20000,
-        hooks = [logging_hook]
+        #hooks = [logging_hook]
     )
 
     eval_input_fn = tf.estimator.inputs.numpy_input_fn(

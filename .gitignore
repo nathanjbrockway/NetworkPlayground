@@ -1,2 +1,3 @@
 *.gz
 tf-cnn-mnist.py
+*.png
