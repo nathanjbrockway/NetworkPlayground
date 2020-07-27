@@ -42,3 +42,5 @@ def make_generator_model():
     assert model.output_shape == (None, 28, 28, 1)
 
     return model
+
+generator = make_generator_model()
